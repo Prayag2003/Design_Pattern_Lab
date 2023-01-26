@@ -1,49 +1,15 @@
+// https://www.geeksforgeeks.org/prototype-design-pattern/
+
 import java.lang.Cloneable;
 import java.util.HashMap;
 
-// Clone of already existing objects
+// Prototype Design Participants
 
-// Copy creation , helps in time saving and saves cost
+// 1) Prototype : This is the prototype of an actual object.
 
-// if database is not locally available , web server , we need to fetch the data and create the object
+// 2) Prototype registry : This is used as a registry service to have all prototypes accessible using simple string parameters.
 
-// drawing application for example using same rectangle again and again , 
-
-// Shallow Copy shares the same references
-// MARKUP interface
-// CLONABLE interface ( java.lang.Cloneable ) 
-// Class should have Copy Feature
-
-// Deep Copy main other copies wont get affected
-// HASHMAP to create feature for registry
-// ConcretePrototype ---> houses( 2 BHK , 3 BHK ) , shops 
-// Map Object <String , newColor > = new HashMap 
-// get ( to store ) , put methods of Map
-
-// prototype 
-// static initialiser block called only once
-
-// Prototype of HOUSE
-//  2 BHK , 3 BHK
-//  reg of sample houses
-//  agent buying 5-10 properties and give him clones of what he asks for
-
-//  House id
-//  area
-// price
-
-// set , getter , const , tostring
-// House implements CLONABLE
-// overrride clone method
-
-// 2BHK extends House
-// parking charge
-
-// 3BHK
-// furniture
-
-// registry --> sample House store
-// make objs of 2 bhk and 3bhk
+// 3) Client : Client will be responsible for using registry service to access prototype instances.
 
 class House implements Cloneable {
     protected String houseID;
@@ -85,14 +51,17 @@ class House implements Cloneable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException 
-    {
+    // Clone() is a method of the Object Class
+
+    protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
 }
 
 class Two_BHK extends House {
+
+    // extra instance field for parking Charge
     protected float parkingCharge;
 
     public Two_BHK(String area, int price, String houseID, float parkingCharge) {
@@ -110,13 +79,16 @@ class Two_BHK extends House {
 
     @Override
     public String toString() {
-        return "Area is " + area + ". House is Price Rs " + price + ". HouseID is " + houseID + ". Furniture_price="
-                + parkingCharge;
+        return "Residential Area is " + area + ". Worth Rs " + price + ". HouseID is " + houseID
+                + ". Parking Charge is = "
+                + parkingCharge + " .\n";
     }
 
 }
 
 class Three_BHK extends House {
+
+    // extra instance field for furniture price
     protected int furniture_price;
 
     public Three_BHK(String area, int price, String houseID, int furniture_price) {
@@ -133,48 +105,49 @@ class Three_BHK extends House {
     }
 
     @Override
-    public String toString() {
-        return "Area is " + area + ". House is Price Rs " + price + ". HouseID is " + houseID + ". Furniture_price="
-                + furniture_price;
+    public String toString() 
+    {
+        return "Residential Area is " + area + ".  Worth Rs " + price + ". HouseID is " + houseID
+                + ". Furniture_price = "
+                + furniture_price + " .\n";
     }
 
 }
 
-// registry
-class HouseStore{
+class HouseStore {
     private static HashMap<String, House> collection = new HashMap<String, House>();
 
+    // static initialiser block called only once
     static {
-        collection.put("2BHK House", new Two_BHK("Surat", 1234000, "2875852", 85));
-        // collection.put("3BHK House", new Three_BHK("Vadodara", 387893247, "8257842", 200));
+        collection.put("2BHK House", new Two_BHK("Delhi", 27000000, "A402", 30));
+        collection.put("3BHK House", new Three_BHK("Mumbai", 35000000, "B300", 40));
     }
 
-    public House getHouse(String type) throws CloneNotSupportedException
-     {
-        return (House)collection.get(type).clone();
+    public House getHouse(String type) throws CloneNotSupportedException {
+        return (House) collection.get(type).clone();
     }
 
 }
 
 public class Lab6 {
-    public static void main(String[] args) throws CloneNotSupportedException {
-        HouseStore hs = new HouseStore();
+    public static void main(String[] args) throws CloneNotSupportedException 
+    {
 
-        House phouse = hs.getHouse("2BHK House");
-        phouse.setPrice(20000000);
+        HouseStore store = new HouseStore();
 
-        House prayaghouse = hs.getHouse("3BHK House");
-        prayaghouse.setPrice(300000000);
+        House PeaceOfLife = store.getHouse("2BHK House");
+        PeaceOfLife.setPrice(20000000);
 
-        System.out.println(phouse);
+        House CradleOfHeaven = store.getHouse("3BHK House");
+        CradleOfHeaven.setPrice(300000000);
 
-        System.out.println(prayaghouse);
+        System.out.println(PeaceOfLife);
 
-        prayaghouse = (House)phouse.clone();
-        System.out.println(prayaghouse);
+        System.out.println(CradleOfHeaven);
+
+        // alternate method 
+        CradleOfHeaven = (House) PeaceOfLife.clone();
+        System.out.println(CradleOfHeaven);
 
     }
 }
-
-// DEEP COPY
-// owner mobile and name
