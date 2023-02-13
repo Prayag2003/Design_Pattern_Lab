@@ -13,3 +13,4 @@ The adapter translates that request on the adaptee using the adaptee interface.
 Client receive the results of the call and is unaware of adapter’s presence.
 
 
+![Adapter_Pattern](https://user-images.githubusercontent.com/94465961/218531681-2befa39e-54ba-4710-a63a-09f27bb22a3a.jpg)
